@@ -23,7 +23,6 @@ export default function ApplicationForm({ onSubmitSuccess }: ApplicationFormProp
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
-  const [applicationId, setApplicationId] = useState<string | null>(null);
 
   const { errors, validateField, validateForm, clearError, setErrors } = useFormValidation();
 
@@ -97,7 +96,6 @@ export default function ApplicationForm({ onSubmitSuccess }: ApplicationFormProp
       if (result.success) {
         setSubmitStatus('success');
         setSubmitMessage('Your application has been submitted successfully!');
-        setApplicationId(result.data?.candidateId || null);
         
         // Call success callback
         if (onSubmitSuccess) {
@@ -125,7 +123,7 @@ export default function ApplicationForm({ onSubmitSuccess }: ApplicationFormProp
         // Handle validation errors from server
         if (result.data?.errors) {
           const newErrors: { [key: string]: string } = {};
-          result.data.errors.forEach((error: any) => {
+          result.data.errors.forEach((error: { field: string; message: string }) => {
             newErrors[error.field] = error.message;
           });
           setErrors(newErrors);
