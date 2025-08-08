@@ -106,6 +106,24 @@
   border-color: #3b82f6;
 }
 
+.inputError,
+.textareaError,
+.fileInputError {
+  border-color: #ef4444 !important;
+}
+
+.fieldError {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fieldError {
+    color: #fca5a5;
+  }
+}
+
 .textarea {
   resize: vertical;
   font-family: inherit;

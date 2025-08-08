@@ -159,8 +159,9 @@ export default function ApplicationForm() {
             onChange={handleInputChange}
             onBlur={handleInputChange}
             required
-            className={styles.input}
+            className={`${styles.input} ${errors.firstName ? styles.inputError : ''}`}
           />
+          {errors.firstName && <p className={styles.fieldError}>{errors.firstName}</p>}
         </div>
 
         <div className={styles.formGroup}>
@@ -173,8 +174,9 @@ export default function ApplicationForm() {
             onChange={handleInputChange}
             onBlur={handleInputChange}
             required
-            className={styles.input}
+            className={`${styles.input} ${errors.lastName ? styles.inputError : ''}`}
           />
+          {errors.lastName && <p className={styles.fieldError}>{errors.lastName}</p>}
         </div>
       </div>
 
@@ -188,8 +190,9 @@ export default function ApplicationForm() {
           onChange={handleInputChange}
           onBlur={handleInputChange}
           required
-          className={styles.input}
+          className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
         />
+        {errors.email && <p className={styles.fieldError}>{errors.email}</p>}
       </div>
 
       <div className={styles.formGroup}>
@@ -202,8 +205,9 @@ export default function ApplicationForm() {
           onChange={handlePhoneChange}
           onBlur={handleInputChange}
           required
-          className={styles.input}
+          className={`${styles.input} ${errors.phone ? styles.inputError : ''}`}
         />
+        {errors.phone && <p className={styles.fieldError}>{errors.phone}</p>}
       </div>
 
       <div className={styles.formGroup}>
@@ -215,9 +219,10 @@ export default function ApplicationForm() {
           value={formData.linkedinUrl}
           onChange={handleInputChange}
           onBlur={handleInputChange}
-          className={styles.input}
+          className={`${styles.input} ${errors.linkedinUrl ? styles.inputError : ''}`}
           placeholder="https://linkedin.com/in/yourprofile"
         />
+        {errors.linkedinUrl && <p className={styles.fieldError}>{errors.linkedinUrl}</p>}
       </div>
 
       <div className={styles.formGroup}>
@@ -228,9 +233,10 @@ export default function ApplicationForm() {
           name="resume"
           onChange={handleFileChange}
           required
-          className={styles.fileInput}
+          className={`${styles.fileInput} ${errors.resume ? styles.fileInputError : ''}`}
           accept=".pdf,.doc,.docx"
         />
+        {errors.resume && <p className={styles.fieldError}>{errors.resume}</p>}
         <p className={styles.fileHint}>Accepted formats: PDF, DOC, DOCX</p>
       </div>
 
@@ -241,10 +247,11 @@ export default function ApplicationForm() {
           name="coverLetter"
           value={formData.coverLetter}
           onChange={handleInputChange}
-          className={styles.textarea}
+          className={`${styles.textarea} ${errors.coverLetter ? styles.textareaError : ''}`}
           rows={6}
           placeholder="Tell us why you're interested in this position..."
         />
+        {errors.coverLetter && <p className={styles.fieldError}>{errors.coverLetter}</p>}
       </div>
 
       <button 
@@ -256,7 +263,7 @@ export default function ApplicationForm() {
       </button>
 
       {submitMessage && (
-        <p className={`${styles.message} ${submitMessage.includes('Error') ? styles.error : styles.success}`}>
+        <p className={`${styles.message} ${submitStatus === 'error' ? styles.error : styles.success}`}>
           {submitMessage}
         </p>
       )}
