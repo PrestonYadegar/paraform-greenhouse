@@ -5,7 +5,11 @@ import { ApplicationFormData } from '@/app/types/greenhouse';
 import { useFormValidation } from '@/app/hooks/useFormValidation';
 import styles from '../page.module.css';
 
-export default function ApplicationForm() {
+interface ApplicationFormProps {
+  onSubmitSuccess?: () => void;
+}
+
+export default function ApplicationForm({ onSubmitSuccess }: ApplicationFormProps) {
   const [formData, setFormData] = useState<ApplicationFormData>({
     firstName: '',
     lastName: '',
@@ -94,6 +98,11 @@ export default function ApplicationForm() {
         setSubmitStatus('success');
         setSubmitMessage('Your application has been submitted successfully!');
         setApplicationId(result.data?.candidateId || null);
+        
+        // Call success callback
+        if (onSubmitSuccess) {
+          onSubmitSuccess();
+        }
         
         // Reset form
         setFormData({

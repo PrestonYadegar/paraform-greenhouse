@@ -1,6 +1,19 @@
 .container {
   min-height: 100vh;
-  display: flex;
+  display: grid;
+  background: #f9fafb;
+  justify-content: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #0f172a;
+  }
+}
+
+.container > :not(:first-child) {
+  flex: 1;
+  display: grid;
   align-items: center;
   justify-content: center;
   padding: 2rem;
@@ -199,6 +212,27 @@
     color: #fca5a5;
     border-color: #ef4444;
   }
+}
+
+.successActions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.backButton {
+  padding: 0.875rem 2rem;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.backButton:hover {
+  background: #059669;
 }
 
 @media (max-width: 600px) {
