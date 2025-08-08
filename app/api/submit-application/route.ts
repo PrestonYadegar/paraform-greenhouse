@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { CandidateData, ApiResponse } from '@/app/types/greenhouse';
+import { validateApplicationForm } from '@/app/utils/validation';
 
 const GREENHOUSE_API_KEY = process.env.GREENHOUSE_API_KEY!;
 const GREENHOUSE_BASE_URL = 'https://harvest.greenhouse.io/v1';
@@ -8,6 +10,20 @@ const USER_ID = process.env.GREENHOUSE_USER_ID!;
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
+    
+    // Validate form data
+    const validationErrors = validateApplicationForm(formData);
+    if (validationErrors.length > 0) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          message: 'Please correct the form errors',
+          error: validationErrors[0].message,
+          data: { errors: validationErrors }
+        },
+        { status: 400 }
+      );
+    }
     
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
@@ -24,7 +40,7 @@ export async function POST(request: NextRequest) {
     const authHeader = `Basic ${Buffer.from(GREENHOUSE_API_KEY + ':').toString('base64')}`;
 
     // Create candidate with application in a single request
-    const candidateData: any = {
+    const candidateData: CandidateData = {
       first_name: firstName,
       last_name: lastName,
       email_addresses: [
@@ -87,18 +103,22 @@ export async function POST(request: NextRequest) {
 
     const result = await response.json();
     
-    return NextResponse.json({
+    return NextResponse.json<ApiResponse>({
       success: true,
       message: 'Application submitted successfully!',
-      applicationId: result.id
+      data: {
+        applicationId: result.id,
+        candidateId: result.id
+      }
     });
 
   } catch (error) {
     console.error('Error submitting application:', error);
-    return NextResponse.json(
+    return NextResponse.json<ApiResponse>(
       {
         success: false,
-        message: 'Failed to submit application. Please try again.'
+        message: 'Failed to submit application. Please try again.',
+        error: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
